@@ -5,7 +5,9 @@ export function Dashboard() {
   return (
     <LayoutBaseDePagina
       titulo="Página Inicial"
-      barraDeFerramentas={<FerramentasDeDetalhes mostrarBotaoSalvarEFechar />}
+      barraDeFerramentas={
+        <FerramentasDeDetalhes mostrarBotaoSalvarEFechar mostrarBotaoNovo />
+      }
     >
       Testando
     </LayoutBaseDePagina>
