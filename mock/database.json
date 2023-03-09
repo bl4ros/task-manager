@@ -1,0 +1,9 @@
+{
+  "tasks": [
+    {
+      "id": 1,
+      "content": "Task teste",
+      "categoria": "Categoria teste 1"
+    }
+  ]
+}
