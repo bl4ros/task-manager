@@ -13,6 +13,7 @@ import {
 import { Box } from "@mui/system";
 import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 import { useDrawerContext } from "../../hooks/useDrawerContext";
+import { useAppThemeContext } from "../../hooks/useThemeContext";
 
 interface IListItemLinkProps {
   label: string;
@@ -53,8 +54,8 @@ interface MenuLateralProps {
 export function MenuLateral({ children }: MenuLateralProps) {
   const theme = useTheme();
   const smDown = useMediaQuery(theme.breakpoints.down("sm"));
-
   const { isDrawerOpen, toggleDrawerOpen, drawerOptions } = useDrawerContext();
+  const { toogleTheme } = useAppThemeContext();
 
   return (
     <>
@@ -97,6 +98,17 @@ export function MenuLateral({ children }: MenuLateralProps) {
                   />
                 );
               })}
+            </List>
+          </Box>
+
+          <Box>
+            <List component="nav">
+              <ListItemButton onClick={toogleTheme}>
+                <ListItemIcon>
+                  <Icon>dark_mode</Icon>
+                </ListItemIcon>
+                <ListItemText primary="Alternar tema" />
+              </ListItemButton>
             </List>
           </Box>
         </Box>
