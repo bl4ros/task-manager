@@ -1,7 +1,7 @@
 import { Button, Icon, Paper, TextField, useTheme } from "@mui/material";
 import { Box } from "@mui/system";
 
-interface BarraDeFerramentasProps {
+interface FerramentasDaListagemProps {
   children?: React.ReactNode;
   mostrarInputBusca?: boolean;
   textoDaBusca?: string;
@@ -12,7 +12,7 @@ interface BarraDeFerramentasProps {
   aoClicarEmNovo?: () => void;
 }
 
-export function BarraDeFerramentas({
+export function FerramentasDaListagem({
   textoDaBusca = "",
   mostrarInputBusca = false,
   aoMudarTextoDeBusca,
@@ -20,7 +20,7 @@ export function BarraDeFerramentas({
   mostrarBotaoNovo = true,
   textoBotaoNovo = "Novo",
   aoClicarEmNovo,
-}: BarraDeFerramentasProps) {
+}: FerramentasDaListagemProps) {
   const theme = useTheme();
 
   return (
