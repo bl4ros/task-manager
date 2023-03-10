@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
+import { ListagemDeCategorias } from "../pages/categorias";
 import { Dashboard } from "../pages/dashboard";
 import { useDrawerContext } from "../shared/hooks/useDrawerContext";
 
@@ -16,9 +17,11 @@ export function Router() {
   return (
     <Routes>
       <Route path="/pagina-inicial" element={<Dashboard />} />
-      <Route path="/categorias" element={<h1>Página de categorias</h1>} />
 
-      {/* <Route path="*" element={<Navigate to="/pagina-inicial" />} /> */}
+      <Route path="/categorias" element={<ListagemDeCategorias />} />
+      {/* <Route path="/categorias/:id" element={<ListagemDeCategorias />} /> */}
+
+      <Route path="*" element={<Navigate to="/pagina-inicial" />} />
     </Routes>
   );
 }
