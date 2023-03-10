@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { ListagemDeCategorias } from "../pages/categorias";
 import { Dashboard } from "../pages/dashboard";
+import { ListagemDeTasks } from "../pages/tasks";
 import { useDrawerContext } from "../shared/hooks/useDrawerContext";
 
 export function Router() {
@@ -10,7 +10,7 @@ export function Router() {
   useEffect(() => {
     setDrawerOptions([
       { label: "Página inicial", icon: "home", path: "/pagina-inicial" },
-      { label: "Categorias", icon: "star", path: "/categorias" },
+      { label: "Tasks", icon: "star", path: "/tasks" },
     ]);
   }, [setDrawerOptions]);
 
@@ -18,8 +18,8 @@ export function Router() {
     <Routes>
       <Route path="/pagina-inicial" element={<Dashboard />} />
 
-      <Route path="/categorias" element={<ListagemDeCategorias />} />
-      {/* <Route path="/categorias/:id" element={<ListagemDeCategorias />} /> */}
+      <Route path="/tasks" element={<ListagemDeTasks />} />
+      {/* <Route path="/tasks/:id" element={<ListagemDeTasks />} /> */}
 
       <Route path="*" element={<Navigate to="/pagina-inicial" />} />
     </Routes>
