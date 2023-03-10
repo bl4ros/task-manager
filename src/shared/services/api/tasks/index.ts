@@ -1,7 +1,7 @@
 import { Environment } from "../../../environment";
 import { Api } from "../axios-config";
 
-interface IListagemTasks {
+export interface IListagemTasks {
   id: number;
   content: string;
   categoryId: number;

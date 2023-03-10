@@ -3,7 +3,20 @@
     {
       "id": 1,
       "content": "Task teste",
-      "categoria": "Categoria teste 1"
+      "categoria": "Categoria teste 1",
+      "categoriaId": 1
+    },
+    {
+      "id": 2,
+      "content": "Task teste",
+      "categoria": "Categoria teste 2",
+      "categoriaId": 2
+    },
+    {
+      "id": 3,
+      "content": "Task teste",
+      "categoria": "Categoria teste 3",
+      "categoriaId": 3
     }
   ]
 }
