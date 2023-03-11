@@ -1,5 +1,6 @@
 import {
   LinearProgress,
+  Pagination,
   Paper,
   Table,
   TableBody,
@@ -28,11 +29,15 @@ export function ListagemDeTasks() {
     return searchParams.get("busca") || "";
   }, [searchParams]);
 
+  const pagina = React.useMemo(() => {
+    return Number(searchParams.get("pagina") || "1");
+  }, [searchParams]);
+
   React.useEffect(() => {
     setIsLoading(true);
 
     debounce(() => {
-      TasksService.getAll(1, busca).then((result) => {
+      TasksService.getAll(pagina, busca).then((result) => {
         setIsLoading(false);
         if (result instanceof Error) {
           return;
@@ -42,7 +47,7 @@ export function ListagemDeTasks() {
         }
       });
     });
-  }, [busca, debounce]);
+  }, [busca, debounce, pagina]);
 
   return (
     <LayoutBaseDePagina
@@ -53,7 +58,7 @@ export function ListagemDeTasks() {
           mostrarInputBusca
           textoDaBusca={busca}
           aoMudarTextoDeBusca={(texto) =>
-            setSearchParams({ busca: texto }, { replace: true })
+            setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
           }
         />
       }
@@ -89,6 +94,22 @@ export function ListagemDeTasks() {
               <TableRow>
                 <TableCell colSpan={3}>
                   <LinearProgress variant="indeterminate" />
+                </TableCell>
+              </TableRow>
+            )}
+            {totalCount > 0 && totalCount > Environment.LIMITE_DE_LINHAS && (
+              <TableRow>
+                <TableCell colSpan={3}>
+                  <Pagination
+                    page={pagina}
+                    count={Math.ceil(totalCount / Environment.LIMITE_DE_LINHAS)}
+                    onChange={(_, newPage) =>
+                      setSearchParams(
+                        { busca, pagina: newPage.toString() },
+                        { replace: true }
+                      )
+                    }
+                  />
                 </TableCell>
               </TableRow>
             )}
