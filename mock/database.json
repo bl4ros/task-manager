@@ -1,36 +1,6 @@
 {
   "tasks": [
     {
-      "id": 1,
-      "content": "A Teste",
-      "categoria": "Categoria teste 1",
-      "categoriaId": 1
-    },
-    {
-      "id": 2,
-      "content": "B Teste",
-      "categoria": "Categoria teste 2",
-      "categoriaId": 2
-    },
-    {
-      "id": 3,
-      "content": "C Teste",
-      "categoria": "Categoria teste 3",
-      "categoriaId": 3
-    },
-    {
-      "id": 4,
-      "content": "A Teste",
-      "categoria": "Categoria teste 4",
-      "categoriaId": 4
-    },
-    {
-      "id": 5,
-      "content": "B Teste",
-      "categoria": "Categoria teste 5",
-      "categoriaId": 5
-    },
-    {
       "id": 6,
       "content": "C Teste",
       "categoria": "Categoria teste 6",

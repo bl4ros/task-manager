@@ -19,7 +19,7 @@ export function Router() {
       <Route path="/pagina-inicial" element={<Dashboard />} />
 
       <Route path="/tasks" element={<ListagemDeTasks />} />
-      {/* <Route path="/tasks/:id" element={<ListagemDeTasks />} /> */}
+      <Route path="/tasks/detalhe/:id" element={<h1>Detalhe</h1>} />
 
       <Route path="*" element={<Navigate to="/pagina-inicial" />} />
     </Routes>

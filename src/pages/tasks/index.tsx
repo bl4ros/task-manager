@@ -1,4 +1,6 @@
 import {
+  Icon,
+  IconButton,
   LinearProgress,
   Pagination,
   Paper,
@@ -11,7 +13,7 @@ import {
   TableRow,
 } from "@mui/material";
 import React from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { FerramentasDaListagem } from "../../shared/components/ferramentas-da-listagem";
 import { Environment } from "../../shared/environment";
 import { useDebounce } from "../../shared/hooks/useDebouce";
@@ -24,6 +26,7 @@ export function ListagemDeTasks() {
   const [rows, setRows] = React.useState<IListagemTasks[]>([]);
   const [totalCount, setTotalCount] = React.useState(0);
   const [isLoading, setIsLoading] = React.useState(true);
+  const navigate = useNavigate();
 
   const busca = React.useMemo(() => {
     return searchParams.get("busca") || "";
@@ -49,6 +52,21 @@ export function ListagemDeTasks() {
     });
   }, [busca, debounce, pagina]);
 
+  const handleDelete = (id: number) => {
+    if (window.confirm("Realmente deseja apagar?")) {
+      TasksService.deleteById(id).then((result) => {
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          setRows((oldRows) => {
+            return [...oldRows.filter((oldRow) => oldRow.id !== id)];
+          });
+          alert("Task apagada com sucesso!");
+        }
+      });
+    }
+  };
+
   return (
     <LayoutBaseDePagina
       titulo="Listagem de tasks"
@@ -71,6 +89,7 @@ export function ListagemDeTasks() {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell>Ação</TableCell>
               <TableCell>Descrição</TableCell>
               <TableCell>Categoria</TableCell>
             </TableRow>
@@ -79,6 +98,17 @@ export function ListagemDeTasks() {
           <TableBody>
             {rows.map((row) => (
               <TableRow key={row.id}>
+                <TableCell>
+                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
+                    <Icon>delete</Icon>
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={() => navigate(`/tasks/detalhe/${row.id}`)}
+                  >
+                    <Icon>edit</Icon>
+                  </IconButton>
+                </TableCell>
                 <TableCell>{row.content}</TableCell>
                 <TableCell>{row.content}</TableCell>
               </TableRow>
