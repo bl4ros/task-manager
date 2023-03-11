@@ -75,6 +75,7 @@ export function ListagemDeTasks() {
           textoBotaoNovo="Nova"
           mostrarInputBusca
           textoDaBusca={busca}
+          aoClicarEmNovo={() => navigate("/tasks/detalhe/nova")}
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
           }
