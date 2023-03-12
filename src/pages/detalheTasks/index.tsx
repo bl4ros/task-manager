@@ -1,7 +1,9 @@
-import { LinearProgress } from "@mui/material";
+import { Box, LinearProgress, TextField } from "@mui/material";
+import { Form } from "@unform/web";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FerramentasDeDetalhes } from "../../shared/components/ferramentas-de-detalhe";
+import { VTextField } from "../../shared/forms/VTextField";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { TasksService } from "../../shared/services/api/tasks";
 
@@ -61,8 +63,10 @@ export function DetalheDeTasks() {
         />
       }
     >
-      {isLoading && <LinearProgress variant="indeterminate" />}
-      Detalhe de tasks
+      <Form onSubmit={(dados) => console.log(dados)}>
+        <VTextField name="content" />
+        <button type="submit">Submit</button>
+      </Form>
     </LayoutBaseDePagina>
   );
 }
