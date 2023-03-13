@@ -111,7 +111,7 @@ export function ListagemDeTasks() {
                   </IconButton>
                 </TableCell>
                 <TableCell>{row.content}</TableCell>
-                <TableCell>{row.content}</TableCell>
+                <TableCell>{row.categoria}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -1,8 +1,8 @@
-import { TextField } from "@mui/material";
+import { TextField, TextFieldProps } from "@mui/material";
 import { useField } from "@unform/core";
 import React from "react";
 
-type VTextFieldProps = {
+type VTextFieldProps = TextFieldProps & {
   name: string;
 };
 

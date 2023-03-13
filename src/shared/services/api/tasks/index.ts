@@ -4,13 +4,12 @@ import { Api } from "../axios-config";
 export interface IListagemTasks {
   id: number;
   content: string;
-  categoryId: number;
+  categoria: string;
 }
 
 interface IDetalheTasks {
   id: number;
   content: string;
-  categoryId: number;
 }
 
 type TTaskComTotalCount = {

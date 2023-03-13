@@ -1,4 +1,3 @@
-import { Box, LinearProgress, TextField } from "@mui/material";
 import { Form } from "@unform/web";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -6,13 +5,24 @@ import { FerramentasDeDetalhes } from "../../shared/components/ferramentas-de-de
 import { VTextField } from "../../shared/forms/VTextField";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { TasksService } from "../../shared/services/api/tasks";
+import FormControl from "@mui/material/FormControl";
+import { VSelect } from "../../shared/forms/VSelect";
+import { FormHandles } from "@unform/core";
+
+interface IFormData {
+  content: string;
+  categoria: string;
+  categoriaId: number;
+}
 
 export function DetalheDeTasks() {
   const { id = "nova" } = useParams<"id">();
-  const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = React.useState(false);
   const [content, setContent] = React.useState("");
+
+  const navigate = useNavigate();
+
+  const formRef = React.useRef<FormHandles>(null);
 
   React.useEffect(() => {
     if (id !== "nova") {
@@ -25,13 +35,36 @@ export function DetalheDeTasks() {
           navigate("/tasks");
         } else {
           setContent(result.content);
-          console.log(result);
+          formRef.current?.setData(result);
         }
       });
     }
   }, [id, navigate]);
 
-  const handleSave = () => {};
+  const handleSave = (dados: IFormData) => {
+    setIsLoading(true);
+    if (id === "nova") {
+      TasksService.create(dados).then((result) => {
+        setIsLoading(false);
+
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          navigate(`/tasks/detalhe/${result}`);
+        }
+      });
+    } else {
+      TasksService.updateById(Number(id), { id: Number(id), ...dados }).then(
+        (result) => {
+          setIsLoading(false);
+
+          if (result instanceof Error) {
+            alert(result.message);
+          }
+        }
+      );
+    }
+  };
 
   const handleDelete = (id: number) => {
     if (window.confirm("Realmente deseja apagar?")) {
@@ -55,17 +88,20 @@ export function DetalheDeTasks() {
           mostrarBotaoApagar={id !== "nova"}
           mostrarBotaoNovo={id !== "nova"}
           mostrarBotaoSalvarEFechar
-          aoCLicarEmSalvar={handleSave}
-          aoCLicarEmSalvarEFechar={handleSave}
+          aoCLicarEmSalvar={() => formRef.current?.submitForm()}
+          aoCLicarEmSalvarEFechar={() => formRef.current?.submitForm()}
           aoCLicarEmNovo={() => navigate("/tasks/detalhe/nova")}
           aoCLicarEmApagar={() => handleDelete(Number(id))}
           aoCLicarEmVoltar={() => navigate("/tasks")}
         />
       }
     >
-      <Form onSubmit={(dados) => console.log(dados)}>
-        <VTextField name="content" />
-        <button type="submit">Submit</button>
+      <Form ref={formRef} onSubmit={handleSave}>
+        <FormControl>
+          <VTextField placeholder="Descrição da task" name="content" />
+          <VTextField placeholder="Id da categoria" name="categoriaId" />
+          <VSelect name="categoria" />
+        </FormControl>
       </Form>
     </LayoutBaseDePagina>
   );
