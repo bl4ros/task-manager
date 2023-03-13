@@ -3,6 +3,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
 import { useField } from "@unform/core";
+import { Box } from "@mui/material";
 
 type VSelectProps = SelectProps & {
   name: string;
@@ -36,13 +37,12 @@ export function VSelect({ name, ...rest }: VSelectProps) {
         onClick={() => (error ? clearError() : undefined)}
       >
         <MenuItem value="" disabled>
-          <em>Selecione uma categoria...</em>
+          <em>Selecione Categoria</em>
         </MenuItem>
         <MenuItem value="Categoria 1">Categoria 1</MenuItem>
         <MenuItem value="Categoria 2">Categoria 2</MenuItem>
         <MenuItem value="Categoria 3">Categoria 3</MenuItem>
       </Select>
-      <FormHelperText>{error}</FormHelperText>
     </>
   );
 }

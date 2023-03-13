@@ -8,11 +8,11 @@ import { TasksService } from "../../shared/services/api/tasks";
 import FormControl from "@mui/material/FormControl";
 import { VSelect } from "../../shared/forms/VSelect";
 import { FormHandles } from "@unform/core";
+import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 
 interface IFormData {
   content: string;
   categoria: string;
-  categoriaId: number;
 }
 
 export function DetalheDeTasks() {
@@ -97,11 +97,39 @@ export function DetalheDeTasks() {
       }
     >
       <Form ref={formRef} onSubmit={handleSave}>
-        <FormControl>
-          <VTextField placeholder="Descrição da task" name="content" />
-          <VTextField placeholder="Id da categoria" name="categoriaId" />
-          <VSelect name="categoria" />
-        </FormControl>
+        <Box
+          margin={1}
+          display="flex"
+          flexDirection="column"
+          component={Paper}
+          variant="outlined"
+        >
+          <Grid container direction="column" padding={2} spacing={2}>
+            {isLoading && (
+              <Grid item>
+                <LinearProgress variant="indeterminate" />
+              </Grid>
+            )}
+            <Grid item>
+              <Typography variant="h6">Geral</Typography>
+            </Grid>
+            <Grid container item direction="row" spacing={2}>
+              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <VTextField
+                  fullWidth
+                  name="content"
+                  disabled={isLoading}
+                  onChange={(e) => setContent(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid container item direction="row">
+              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <VSelect disabled={isLoading} fullWidth name="categoria" />
+              </Grid>
+            </Grid>
+          </Grid>
+        </Box>
       </Form>
     </LayoutBaseDePagina>
   );
