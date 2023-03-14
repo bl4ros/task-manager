@@ -2,17 +2,16 @@ import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FerramentasDeDetalhes } from "../../shared/components/ferramentas-de-detalhe";
 import { LayoutBaseDePagina } from "../../shared/layouts";
-import { TasksService } from "../../shared/services/api/tasks";
 import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
 import { VForm, VSelect, VTextField } from "../../shared/forms";
 import { useVForm } from "../../shared/forms/useVForm";
+import { CategoriesService } from "../../shared/services/api/categories";
 
 interface IFormData {
   content: string;
-  categoria: string;
 }
 
-export function DetalheDeTasks() {
+export function DetalheDeCategories() {
   const { id = "nova" } = useParams<"id">();
   const [isLoading, setIsLoading] = React.useState(false);
   const [content, setContent] = React.useState("");
@@ -24,12 +23,12 @@ export function DetalheDeTasks() {
   React.useEffect(() => {
     if (id !== "nova") {
       setIsLoading(true);
-      TasksService.getById(Number(id)).then((result) => {
+      CategoriesService.getById(Number(id)).then((result) => {
         setIsLoading(false);
 
         if (result instanceof Error) {
           alert(result.message);
-          navigate("/tasks");
+          navigate("/categories");
         } else {
           setContent(result.content);
           formRef.current?.setData(result);
@@ -56,7 +55,7 @@ export function DetalheDeTasks() {
       return;
     }
 
-    if (dados.categoria === undefined) {
+    if (dados.content === undefined) {
       formRef.current?.setFieldError(
         "categoria",
         "O campo precisa ser selecionado"
@@ -67,44 +66,45 @@ export function DetalheDeTasks() {
     }
 
     if (id === "nova") {
-      TasksService.create(dados).then((result) => {
+      CategoriesService.create(dados).then((result) => {
         setIsLoading(false);
 
         if (result instanceof Error) {
           alert(result.message);
         } else {
           if (isSaveAndClose()) {
-            navigate(`/tasks`);
+            navigate(`/categories`);
           } else {
-            navigate(`/tasks/detalhe/${result}`);
+            navigate(`/categories/detalhe/${result}`);
           }
         }
       });
     } else {
-      TasksService.updateById(Number(id), { id: Number(id), ...dados }).then(
-        (result) => {
-          setIsLoading(false);
+      CategoriesService.updateById(Number(id), {
+        id: Number(id),
+        ...dados,
+      }).then((result) => {
+        setIsLoading(false);
 
-          if (result instanceof Error) {
-            alert(result.message);
-          } else {
-            if (isSaveAndClose()) {
-              navigate(`/tasks`);
-            }
+        if (result instanceof Error) {
+          alert(result.message);
+        } else {
+          if (isSaveAndClose()) {
+            navigate(`/categories`);
           }
         }
-      );
+      });
     }
   };
 
   const handleDelete = (id: number) => {
     if (window.confirm("Realmente deseja apagar?")) {
-      TasksService.deleteById(id).then((result) => {
+      CategoriesService.deleteById(id).then((result) => {
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          alert("Task apagada com sucesso!");
-          navigate("/tasks");
+          alert("Categoria apagada com sucesso!");
+          navigate("/categories");
         }
       });
     }
@@ -112,7 +112,7 @@ export function DetalheDeTasks() {
 
   return (
     <LayoutBaseDePagina
-      titulo={id === "nova" ? "Nova task" : content}
+      titulo={id === "nova" ? "Nova categoria" : content}
       barraDeFerramentas={
         <FerramentasDeDetalhes
           textoBotaoNovo="Nova"
@@ -121,7 +121,7 @@ export function DetalheDeTasks() {
           mostrarBotaoSalvarEFechar
           aoCLicarEmSalvar={save}
           aoCLicarEmSalvarEFechar={saveAndClose}
-          aoCLicarEmNovo={() => navigate("/tasks/detalhe/nova")}
+          aoCLicarEmNovo={() => navigate("/categories/detalhe/nova")}
           aoCLicarEmApagar={() => handleDelete(Number(id))}
           aoCLicarEmVoltar={saveAndClose}
         />
@@ -146,19 +146,13 @@ export function DetalheDeTasks() {
             </Grid>
             <Grid container item direction="row" spacing={2}>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <label htmlFor="">Descrição da task</label>
+                <label htmlFor="">Descrição da categoria</label>
                 <VTextField
                   fullWidth
                   name="content"
                   disabled={isLoading}
                   onChange={(e) => setContent(e.target.value)}
                 />
-              </Grid>
-            </Grid>
-            <Grid container item direction="row">
-              <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                <label htmlFor="">Selecione uma categoria</label>
-                <VSelect disabled={isLoading} fullWidth name="categoria" />
               </Grid>
             </Grid>
           </Grid>

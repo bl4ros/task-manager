@@ -1,39 +1,24 @@
 {
   "tasks": [
     {
-      "id": 10,
-      "content": "B Teste",
-      "categoria": "Categoria 3"
-    },
-    {
-      "id": 11,
-      "content": "A Teste",
-      "categoria": "Categoria teste 11"
-    },
-    {
-      "id": 15,
-      "content": "B Teste",
-      "categoria": "Categoria teste 15"
-    },
-    {
-      "id": 16,
-      "content": "Legal",
+      "id": 2,
+      "content": "Task Teste 3",
       "categoria": "Categoria 1"
     },
     {
-      "id": 17,
-      "content": "Teste Testinho",
-      "categoria": "Categoria 3"
+      "content": "Tast Task 3",
+      "categoria": "Categoria 3",
+      "id": 3
+    }
+  ],
+  "categories": [
+    {
+      "id": 2,
+      "content": "Categoria 5"
     },
     {
-      "id": 18,
-      "content": "Legalzinho Teste",
-      "categoria": "Categoria 1"
-    },
-    {
-      "id": 19,
-      "content": "Ana Ana a palma da banana",
-      "categoria": "Categoria 1"
+      "content": "Categoria 3",
+      "id": 3
     }
   ]
 }
