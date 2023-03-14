@@ -1,14 +1,11 @@
-import { Form } from "@unform/web";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FerramentasDeDetalhes } from "../../shared/components/ferramentas-de-detalhe";
-import { VTextField } from "../../shared/forms/VTextField";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { TasksService } from "../../shared/services/api/tasks";
-import FormControl from "@mui/material/FormControl";
-import { VSelect } from "../../shared/forms/VSelect";
-import { FormHandles } from "@unform/core";
 import { Box, Grid, LinearProgress, Paper, Typography } from "@mui/material";
+import { VForm, VSelect, VTextField } from "../../shared/forms";
+import { useVForm } from "../../shared/forms/useVForm";
 
 interface IFormData {
   content: string;
@@ -22,7 +19,7 @@ export function DetalheDeTasks() {
 
   const navigate = useNavigate();
 
-  const formRef = React.useRef<FormHandles>(null);
+  const { formRef, save, saveAndClose, isSaveAndClose } = useVForm();
 
   React.useEffect(() => {
     if (id !== "nova") {
@@ -38,11 +35,16 @@ export function DetalheDeTasks() {
           formRef.current?.setData(result);
         }
       });
+    } else {
+      formRef.current?.setData({
+        content: "",
+      });
     }
-  }, [id, navigate]);
+  }, [id, navigate, formRef]);
 
   const handleSave = (dados: IFormData) => {
     setIsLoading(true);
+
     if (id === "nova") {
       TasksService.create(dados).then((result) => {
         setIsLoading(false);
@@ -50,7 +52,11 @@ export function DetalheDeTasks() {
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          navigate(`/tasks/detalhe/${result}`);
+          if (isSaveAndClose()) {
+            navigate(`/tasks`);
+          } else {
+            navigate(`/tasks/detalhe/${result}`);
+          }
         }
       });
     } else {
@@ -60,6 +66,10 @@ export function DetalheDeTasks() {
 
           if (result instanceof Error) {
             alert(result.message);
+          } else {
+            if (isSaveAndClose()) {
+              navigate(`/tasks`);
+            }
           }
         }
       );
@@ -88,15 +98,15 @@ export function DetalheDeTasks() {
           mostrarBotaoApagar={id !== "nova"}
           mostrarBotaoNovo={id !== "nova"}
           mostrarBotaoSalvarEFechar
-          aoCLicarEmSalvar={() => formRef.current?.submitForm()}
-          aoCLicarEmSalvarEFechar={() => formRef.current?.submitForm()}
+          aoCLicarEmSalvar={save}
+          aoCLicarEmSalvarEFechar={saveAndClose}
           aoCLicarEmNovo={() => navigate("/tasks/detalhe/nova")}
           aoCLicarEmApagar={() => handleDelete(Number(id))}
-          aoCLicarEmVoltar={() => navigate("/tasks")}
+          aoCLicarEmVoltar={saveAndClose}
         />
       }
     >
-      <Form ref={formRef} onSubmit={handleSave}>
+      <VForm ref={formRef} onSubmit={handleSave}>
         <Box
           margin={1}
           display="flex"
@@ -115,6 +125,7 @@ export function DetalheDeTasks() {
             </Grid>
             <Grid container item direction="row" spacing={2}>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <label htmlFor="">Descrição da task</label>
                 <VTextField
                   fullWidth
                   name="content"
@@ -125,12 +136,13 @@ export function DetalheDeTasks() {
             </Grid>
             <Grid container item direction="row">
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                <label htmlFor="">Selecione uma categoria</label>
                 <VSelect disabled={isLoading} fullWidth name="categoria" />
               </Grid>
             </Grid>
           </Grid>
         </Box>
-      </Form>
+      </VForm>
     </LayoutBaseDePagina>
   );
 }

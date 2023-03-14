@@ -3,7 +3,7 @@
     {
       "id": 10,
       "content": "B Teste",
-      "categoria": "Categoria teste 10"
+      "categoria": "Categoria 3"
     },
     {
       "id": 11,
@@ -24,6 +24,16 @@
       "id": 17,
       "content": "Teste Testinho",
       "categoria": "Categoria 3"
+    },
+    {
+      "id": 18,
+      "content": "Legalzinho Teste",
+      "categoria": "Categoria 1"
+    },
+    {
+      "id": 19,
+      "content": "Ana Ana a palma da banana",
+      "categoria": "Categoria 1"
     }
   ]
 }
