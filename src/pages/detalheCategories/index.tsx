@@ -42,7 +42,6 @@ export function DetalheDeCategories() {
   }, [id, navigate, formRef]);
 
   const handleSave = (dados: IFormData) => {
-    console.log(dados);
     setIsLoading(true);
 
     if (dados.content.length <= 3) {

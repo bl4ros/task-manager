@@ -12,23 +12,25 @@ export function Router() {
 
   useEffect(() => {
     setDrawerOptions([
-      { label: "Página inicial", icon: "home", path: "/pagina-inicial" },
+      // { label: "Página inicial", icon: "home", path: "/pagina-inicial" },
       { label: "Tasks", icon: "star", path: "/tasks" },
-      { label: "Categorias", icon: "star", path: "/categories" },
+      { label: "Categorias", icon: "category", path: "/categories" },
     ]);
   }, [setDrawerOptions]);
 
   return (
     <Routes>
-      <Route path="/pagina-inicial" element={<Dashboard />} />
+      {/* <Route path="/pagina-inicial" element={<Dashboard />} /> */}
 
+      <Route path="/" element={<ListagemDeTasks />} />
       <Route path="/tasks" element={<ListagemDeTasks />} />
+
       <Route path="/tasks/detalhe/:id" element={<DetalheDeTasks />} />
 
       <Route path="/categories" element={<ListagemDeCategories />} />
       <Route path="/categories/detalhe/:id" element={<DetalheDeCategories />} />
 
-      <Route path="*" element={<Navigate to="/pagina-inicial" />} />
+      {/* <Route path="*" element={<Navigate to="/pagina-inicial" />} /> */}
     </Routes>
   );
 }

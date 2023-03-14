@@ -2,6 +2,12 @@ import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectChangeEvent, SelectProps } from "@mui/material/Select";
 import { useField } from "@unform/core";
+import {
+  CategoriesService,
+  IListagemCategories,
+} from "../services/api/categories";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useDebounce } from "../hooks/useDebouce";
 
 type VSelectProps = SelectProps & {
   name: string;
@@ -11,6 +17,30 @@ export function VSelect({ name, ...rest }: VSelectProps) {
   const { fieldName, registerField, defaultValue, error, clearError } =
     useField(name);
   const [value, setValue] = React.useState(defaultValue || "");
+  const [categories, setCategories] = React.useState<IListagemCategories[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const { debounce } = useDebounce();
+
+  const busca = React.useMemo(() => {
+    return searchParams.get("busca") || "";
+  }, [searchParams]);
+
+  const pagina = React.useMemo(() => {
+    return Number(searchParams.get("pagina") || "1");
+  }, [searchParams]);
+
+  React.useEffect(() => {
+    debounce(() => {
+      CategoriesService.getAll(pagina, busca).then((result) => {
+        if (result instanceof Error) {
+          return;
+        } else {
+          setCategories(result.data);
+        }
+      });
+    });
+  }, [busca, debounce, pagina]);
 
   React.useEffect(() => {
     registerField({
@@ -34,9 +64,13 @@ export function VSelect({ name, ...rest }: VSelectProps) {
         onChange={handleChange}
         onClick={() => (error ? clearError() : undefined)}
       >
-        <MenuItem value="Categoria 1">Categoria 1</MenuItem>
-        <MenuItem value="Categoria 2">Categoria 2</MenuItem>
-        <MenuItem value="Categoria 3">Categoria 3</MenuItem>
+        {categories.map((category) => {
+          return (
+            <MenuItem key={category.id} value={category.content}>
+              {category.content}
+            </MenuItem>
+          );
+        })}
       </Select>
     </>
   );
